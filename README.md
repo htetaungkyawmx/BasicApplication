@@ -12,15 +12,15 @@ A modern Android application built with Kotlin and Material Design for city sele
 ## 📸 App Screenshots
 
 ### Main Activity - City Selection
-![Main Activity](./screenshots/main_activity.png)
+![Main Activity](app/screenshots/main_activity.png)
 *Choose your city from the dropdown and submit*
 
 ### Form Activity - User Registration
-![Form Activity](./screenshots/form_activity.png)
+![Form Activity](app/screenshots/form_activity.png)
 *Enter your name and select L5DC section (110, 111, 114, 115)*
 
 ### Entry Activity - Date of Birth
-![Entry Activity](./screenshots/entry_activity.png)
+![Entry Activity](app/screenshots/entry_activity.png)
 *Select your date of birth with navigation options*
 
 ## 🏙️ City Selection Screen
