@@ -80,19 +80,21 @@ class MainActivity : AppCompatActivity() {
         // Modern way to handle back button (recommended)
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                // Move app to background instead of closing
-                moveTaskToBack(true)
+                navigateToEntryActivity()
             }
         })
     }
 
-    // Optional: If you still want to use the old method (remove if using the new one above)
+    private fun navigateToEntryActivity() {
+        val intent = Intent(this, EntryActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
+        finish()
+    }
+
     /*
     override fun onBackPressed() {
-        // Call super to maintain proper behavior
-        super.onBackPressed()
-        // Move app to background
-        moveTaskToBack(true)
+        navigateToEntryActivity()
     }
     */
 }
