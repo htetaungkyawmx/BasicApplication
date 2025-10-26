@@ -1,9 +1,12 @@
 package org.hak.basicapplication
 
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Intent
 import android.icu.util.Calendar
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
@@ -19,8 +22,10 @@ class EntryActivity : AppCompatActivity() {
     lateinit var btnEntrySubmit: Button
     lateinit var spinnerCity: Spinner
     lateinit var txtDOB : TextView
+    lateinit var txttime: TextView
+    var selectedDOB=""
+    var selectedTime=""
 
-    private var selectedDOB = "";
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_entry)
@@ -29,6 +34,8 @@ class EntryActivity : AppCompatActivity() {
         txtViewDetail=findViewById(R.id.txtViewDetail)
         btnEntrySubmit=findViewById(R.id.btnEntrySubmit)
         spinnerCity=findViewById(R.id.spinnerCity)
+        txtDOB=findViewById(R.id.txtDOB)
+        txttime=findViewById(R.id.txttime)
 
         val data=intent.extras
         var msg=data?.getString("msg")
@@ -58,13 +65,35 @@ class EntryActivity : AppCompatActivity() {
                 Toast.makeText(this,"Your Selected:$selectedCity", Toast.LENGTH_LONG).show()
             }
         }
+        //DatePickerDialog
         txtDOB.setOnClickListener {
             showDatePickerDialog()
         }
-
-
-
+        //TimePickerDialog
+        txttime.setOnClickListener {
+            showTimePickerDialog()
+        }
     }//on create
+
+    private fun EntryActivity.showTimePickerDialog() {
+       val calendar= Calendar.getInstance()
+        val timePickerDialog= TimePickerDialog(this,{_,hr,min->
+          // txttime.text="$hr:$min"
+
+            val c= Calendar.getInstance()
+            c.set(Calendar.HOUR_OF_DAY,hr)
+            c.set(Calendar.MINUTE,min)
+            var timeFormat= SimpleDateFormat("hh:mm a",Locale.getDefault())
+            selectedTime=timeFormat.format(c.time).toString()
+            txttime.text=selectedTime
+        },
+
+            calendar.get(Calendar.HOUR_OF_DAY),
+            calendar.get(Calendar.MINUTE),
+            false // 24 hours format
+            )
+        timePickerDialog.show()
+    }
 
     private fun showDatePickerDialog() {
         val calendar= Calendar.getInstance()
@@ -76,13 +105,40 @@ class EntryActivity : AppCompatActivity() {
             c.set(year,month,day)
             val dateFormat = SimpleDateFormat("dd/mm/yy", Locale.getDefault())
 
-
         },calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH),
             calendar.get(Calendar.DAY_OF_MONTH)
-
         )
+    }//showDatePickerDialog
 
-
+    //menu inflate
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu,menu)
+        return true
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val result = when(item.itemId){
+            R.id.itemHome->{
+                intent= Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.itemSetting->{
+                Toast.makeText(this,"Clicked Setting", Toast.LENGTH_LONG).show()
+                true
+            }
+            R.id.itemSearch->{
+                Toast.makeText(this,"Clicked Search", Toast.LENGTH_LONG).show()
+                true
+            }
+            R.id.itemExit->{
+                finish()
+                true
+            }
+            else -> false
+        }
+        return result
+    }
+
 }//end class
